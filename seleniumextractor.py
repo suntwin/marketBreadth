@@ -12,13 +12,14 @@ class SeleniumExtractor:
     # print("inside constructor")
     options = Options()
     options.add_experimental_option("prefs", {
-      "download.default_directory":r'C:\Users\Sonam\Downloads\chromedriver_win32',
+      "download.default_directory":r'C:\Users\nites\Downloads\chromedriver_win32',
       "download.prompt_for_download": False,
       "download.directory_upgrade": True,
       "safebrowsing.enabled": True
     })
     self.url = url
-    self.driver = webdriver.Chrome(r'C:\Users\Sonam\Downloads\chromedriver_win32\chromedriver.exe', chrome_options=options)
+
+    self.driver = webdriver.Chrome(r'C:\Users\nites\Downloads\chromedriver_win32\chromedriver.exe', chrome_options=options)
     self.loadedpage = self.driver.get(url)
 
   def get_table_rows_by_class(self, class_name):
@@ -68,7 +69,10 @@ class SeleniumExtractor:
 
     # print("inside get elems by class")
     try:
-      elems = self.driver.find_elements_by_class_name(class_name)
+      #elems = self.driver.find_elements_by_class_name(class_name)
+      elems = self.driver.find_elements(By.CLASS_NAME, class_name)
+      elems = self.driver.find_elements(By.CLASS_NAME, class_name)
+
 
 
 
@@ -80,8 +84,8 @@ class SeleniumExtractor:
 
     # print("inside get elems by class")
     try:
-      elems = self.driver.find_element_by_id(id)
-
+      #elems = self.driver.find_element_by_id(id)
+      elems = self.driver.find_element(By.ID, id)
 
 
     except Exception as e:
@@ -93,7 +97,8 @@ class SeleniumExtractor:
     # print("inside get elems by class")
     try:
       print("linktext is", linktext)
-      elems = self.driver.find_elements_by_partial_link_text(linktext)
+      #elems = self.driver.find_elements_by_partial_link_text(linktext)
+      elems = self.driver.find_elements(By.PARTIAL_LINK_TEXT, linktext)
       return (elems)
     except Exception as e:
       raise Driver_Find_Error("Error while extracting elements based on class name", 's108', e)
@@ -104,7 +109,8 @@ class SeleniumExtractor:
     # print("inside get elems by class")
     try:
       print("css path", path)
-      elems = self.driver.find_elements_by_css_selector(path)
+      #elems = self.driver.find_elements_by_css_selector(path)
+      elems = self.driver.find_elements(By.CSS_SELECTOR, path)
       return (elems)
 
 
