@@ -1,0 +1,11 @@
+function popup(n, u, w, h, t) {
+var top_value = 120 + window.document.body.scrollTop;
+wpopup = $.web3Popup({autoSize:true, top:top_value,bound: false, html:'<img src="/stock-screener/loading.gif" width="50" height="50" border="0">', href:u, moveHandle:'#dragHandle'});}
+
+function init_row_highlight() {
+$("#results tr").mouseover(function () {
+if($(this).hasClass("rowodd")) {$(this).removeClass("rowodd"); $(this).addClass("rowodd_high");}
+if($(this).hasClass("roweven")) {$(this).removeClass("roweven");$(this).addClass("roweven_high");}});
+$("#results tr").mouseleave(function () {
+if($(this).hasClass("rowodd_high")) {$(this).removeClass("rowodd_high");$(this).addClass("rowodd");}
+if($(this).hasClass("roweven_high")) {$(this).removeClass("roweven_high");$(this).addClass("roweven");}});}

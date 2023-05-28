@@ -1,0 +1,103 @@
+.wftiny { width:240px; height:auto;}
+.wfmini { width:300px; height:auto;}
+.wfsmall { width:400px; height:auto;}
+.wfmedium { width:600px; height:auto;}
+.wfbig { width:1000px; height:auto;}
+.wfhuge { width:2000px; height:auto;}
+.wfmonster { width:4000px; height:auto;}
+
+.scala {height: auto;}
+.smooth {}
+.pixelated {
+	image-rendering: pixelated;
+	-ms-interpolation-mode: nearest-neighbor;
+	image-rendering: -moz-crisp-edges;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.91),
+	screen and (min-resolution: 1.91dppx) {
+	.wtiny { width:240px;}
+	.wmini { width:300px;}
+	.wsmall { width:400px;}
+	.wmedium { width:600px;}
+	.wbig { width:1000px;}
+	.whuge { width:2000px;}
+	.wmonster { width:4000px;}
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.61) and (-webkit-max-device-pixel-ratio: 1.90),
+	screen and (min-resolution: 1.61dppx) and (max-resolution: 1.90dppx) { /* s: 0.57143; r: 1.75; */
+	.wtiny { width:137px;}
+	.wmini { width:171px;}
+	.wsmall { width:229px;}
+	.wmedium { width:343px;}
+	.wbig { width:571px;}
+	.whuge { width:1143px;}
+	.wmonster { width:2286px;}
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.41) and (-webkit-max-device-pixel-ratio: 1.60),
+	screen and (min-resolution: 1.41dppx) and (max-resolution: 1.60dppx) { /* s: 0.66667; r: 1.50; */
+	.wtiny { width:160px;}
+	.wmini { width:200px;}
+	.wsmall { width:268px;}
+	.wmedium { width:400px;}
+	.wbig { width:667px;}
+	.whuge { width:1333px;}
+	.wmonster { width:2666px;}
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.31) and (-webkit-max-device-pixel-ratio: 1.40),
+	screen and (min-resolution: 1.31dppx) and (max-resolution: 1.40dppx) { /* s: 0.75; r: 1.33; */
+	.wtiny { width:180px;}
+	.wmini { width:225px;}
+	.wsmall { width:300px;}
+	.wmedium { width:450px;}
+	.wbig { width:750px;}
+	.whuge { width:1500px;}
+	.wmonster { width:3000px;}
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.23) and (-webkit-max-device-pixel-ratio: 1.30),
+	screen and (min-resolution: 1.23dppx) and (max-resolution: 1.30dppx) { /* s: 0.8; r: 1.25; */
+	.wtiny { width:192px;}
+	.wmini { width:240px;}
+	.wsmall { width:320px;}
+	.wmedium { width:480px;}
+	.wbig { width:800px;}
+	.whuge { width:1600px;}
+	.wmonster { width:3200px;}
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.15) and (-webkit-max-device-pixel-ratio: 1.22),
+	screen and (min-resolution: 1.15dppx) and (max-resolution: 1.22dppx) { /* s: 0.83333; r: 1.20; */
+	.wtiny { width:200px;}
+	.wmini { width:250px;}
+	.wsmall { width:333px;}
+	.wmedium { width:500px;}
+	.wbig { width:833px;}
+	.whuge { width:1667px;}
+	.wmonster { width:3333px;}
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.05) and (-webkit-max-device-pixel-ratio: 1.15),
+	screen and (min-resolution: 1.05dppx) and (max-resolution: 1.15dppx) { /* s: 0.90909; r: 1.10;  */
+	.wtiny { width:218px;}
+	.wmini { width:273px;}
+	.wsmall { width:364px;}
+	.wmedium { width:545px;}
+	.wbig { width:909px;}
+	.whuge { width:1818px;}
+	.wmonster { width:3636px;}
+}
+
+@media screen and (-webkit-max-device-pixel-ratio: 1.05),
+	screen and (max-resolution: 1.05dppx) { /* s: 1.00; r: 1.00; */
+	.wtiny { width:240px;}
+	.wmini { width:300px;}
+	.wsmall { width:400px;}
+	.wmedium { width:600px;}
+	.wbig { width:1000px;}
+	.whuge { width:2000px;}
+	.wmonster { width:4000px;}
+}

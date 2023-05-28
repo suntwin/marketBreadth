@@ -1,0 +1,84 @@
+function doReady() {
+	if(exch != "" && list == "" && $("#exch").length) {
+		$("#exch").val(exch);
+	}
+	
+	init_row_highlight();
+}
+
+function doLoaded() {
+	adjust_sizes_of_divs();
+}
+
+function adjust_sizes_of_divs() {
+    var highestBox = 0;
+        $('.thumb').each(function(){  
+                if($(this).height() > highestBox){  
+                highestBox = $(this).height();  
+        }
+    });  
+    $('.thumb').height(highestBox);
+}
+
+function add_to_port() {
+	var top_value = 120 + window.document.body.scrollTop;
+	$.web3Popup({
+		top:top_value, autoSize:true, bound:false,
+		html:'<img src="/stock-screener/loading.gif" width="50" height="50" border="0">',
+		href:'/tools/port_bulk.php?stocks=' + stocks_str,
+		width:250, height:100, moveHandle:'#dragHandle'
+	});
+}
+
+function add_to_wl() {
+	var top_value = 120 + window.document.body.scrollTop;
+	wpopup = $.web3Popup({
+		top:top_value, autoSize:true, bound:false,
+		html:'<img src="/stock-screener/loading.gif" width="50" height="50" border="0">',
+		href:'/wl/wl_add_all.php',
+		width:500, height:200, moveHandle:'#dragHandle'
+	});
+}
+
+function api_info(api_key) {
+	var top_value = 120 + window.document.body.scrollTop;
+	wpopup = $.web3Popup({
+		top:top_value, autoSize:true, bound:false,
+		html:'<img src="/stock-screener/loading.gif" width="50" height="50" border="0">',
+		href:'/stock-screener/api_info.php?api_key=' + api_key,
+		width:500, height:200, moveHandle:'#dragHandle'
+	});
+}
+
+function drop_down_change(param_name, param_value) {
+	var new_url = base_url + "&view=" + $("#view").val();
+	
+	if (( param_name == "vs" || param_name == "vz") && $("#vp").length > 0) new_url = new_url + "&vp=" + $("#vp").val();
+	
+	if(exch.length) {
+		if(list != "") {
+			new_url = new_url + "&exch=" + exch;
+		}
+		else {
+			new_url = new_url + "&exch=" + $("#exch").val();
+		}
+	}
+	
+	if(param_name != '' && param_value != '') {
+		new_url = new_url + "&" + param_name + "=" + param_value
+	}
+
+	window.document.location.href = new_url;
+}
+
+function switch_screen() {
+	var sid = $("#myscreens").val();
+	var new_url = page_url + "?screen_id=" + sid;
+	new_url = new_url + "&view=" + $("#view").val();
+	
+	$("#myscreens").val("");
+	
+	if(sid != '') {
+		window.document.location.href = new_url;
+	}
+}

@@ -1,0 +1,229 @@
+﻿@media screen and (min-width: 950px) {
+	.menu-w {width: 150px}
+	.crew-w{width: 200px; height: 134px}
+	.pic-w{width: 200px; height: 140px}
+	.no-wrap{white-space: nowrap}
+	.video{width: 200px; height: 112px}
+	.youtube-player{width: 200px; height: 112px}
+	
+	.panel-w{width: 250px}
+	.panel-w2{width: 240px}
+	.panel-txt-w{width: 80px}
+	.panel-snp-w{width: 240px; height: auto;}
+
+	.roweven .mobile_last1, .rowodd .mobile_last1{border-right: #64CDFF 0px solid; height: 20px}
+	.roweven_box_notop .mobile_last1, .roweven_box .mobile_last1 {border-right: #64CDFF 0px solid; height: 22px}
+	
+	.nav-w{width: 160px}
+	.panel-ww{width: 250px}
+	.panel-help{width: 200px}
+	.sel_tab{width: 180px}
+	.not_sel_tab{width: 180px}
+	.alert-comm{width: 300px}
+	.settings{display: inline;}
+	.settings-none{display: inline}
+	.settings-anchor{display: none}
+	.snp-chart{display: block}
+}
+
+@media screen and (min-width: 750px) and (max-width: 950px) {
+	.menu-w {width: 40px}
+	.crew-w{width: 130px; height: 87px}
+	.pic-w{width: 130px; height: 91px}
+	.no-wrap{white-space: nowrap}
+	.video{width: 130px; height: 73px}
+	.youtube-player{width: 130px; height: 73px}
+	
+	.panel-w{width: 250px}
+	.panel-w2{width: 140px}
+	.panel-txt-w{width: 60px}
+	.panel-snp-w{width: 240px; height: auto;}
+	
+	.stocks-view{width: 100px}
+	.roweven .mobile_last1, .rowodd .mobile_last1{border-right: #64CDFF 1px solid; height: 20px}
+	.roweven_box_notop .mobile_last1, .roweven_box .mobile_last1 {border-right: #64CDFF 1px solid; height: 22px}
+	
+	.nav-w{width: 110px}
+	.panel-ww{width: 250px}
+	.menu-item-h{height: 30px;}
+	.panel-help{width: 150px}
+	.sel_tab{width: 120px}
+	.not_sel_tab{width: 120px}
+	.alert-comm{width: 300px}
+	.settings{display: inline}
+	.settings-none{display: inline}
+	.settings-anchor{display: none}
+	.snp-chart{display: block}
+}
+
+@media screen and (max-width: 750px) {
+	.menu-w {width: 40px}
+	.crew-w{width: 100px; height: 67px}
+	.pic-w{width: 100px; height: 70px}
+	.no-wrap{white-space: normal}
+	.video{width: 100px; height: 56px}
+	.youtube-player{width: 100px; height: 56px}
+	
+	.panel-w{width: 100px}
+	.panel-w2{width: 90px}
+	.panel-txt-w{width: 40px}
+	.panel-snp-w{width: 96px; height: auto;}
+	
+	.stocks-view{width: 80px}
+	.roweven .mobile_last1, .rowodd .mobile_last1{border-right: #64CDFF 1px solid; height: 20px}
+	.roweven_box_notop .mobile_last1, .roweven_box .mobile_last1 {border-right: #64CDFF 1px solid; height: 22px}
+	
+	.nav-w{width: 80px}
+	.panel-ww{width: 190px}
+	.menu-item-h{height: 30px;}
+	.panel-help{width: 100px}
+	.sel_tab{width: 60px}
+	.not_sel_tab{width: 60px}
+	.alert-comm{width: 150px}
+	.settings{display: none}
+	.settings-none{display: inline}
+	.settings-anchor{display: inline}
+	.snp-chart{display: none}
+}
+
+@media screen and (min-width: 1200) {
+	.cell{display: table-cell}
+	.cell2{display: table-cell}
+}
+@media screen and (min-width: 600px) and (max-width: 1200px) {
+	.cell{display: none}
+	.cell2{display: table-cell}
+}
+@media screen and (max-width: 600px) {
+	.cell{display: none}
+	.cell2{display: none}
+}
+
+/*@media screen and (min-width: 520px) { .q-chart-w{width: 400px; height: 200px} }
+@media screen and (min-width: 440px) and (max-width: 520px) { .q-chart-w{width: 300px; height: 150px} }
+@media screen and (max-width: 440px) { .q-chart-w{width: 187px; height: 100px} }*/
+
+@media screen and (min-width: 1400px) {
+	.logo-w{width: auto; height: 60px}
+	.stocks-view-big{width: 220px}
+	.stocks-view{width: 150px}
+	.main-menu{display: inline}
+	.main-menu-none{display: inline}
+	.anchor{display: none}
+	.sig1{display: inline}
+	.sig2{display: inline}
+	.sig4{display: inline}
+	.img-port-pos-1{display: inline}
+	.img-port-pos-2{display: none}
+}
+@media screen and (min-width: 1200px) and (max-width: 1400px) {
+	.logo-w{width: auto; height: 60px}
+	.stocks-view-big{width: 220px}
+	.stocks-view{width: 150px}
+	.img-help-w{width: 700px}
+	.main-menu{display: inline}
+	.main-menu-none{display: inline}
+	.anchor{display: none}
+	.sig1{display: inline}
+	.sig2{display: inline}
+	.sig4{display: inline}
+	.img-port-pos-1{display: none}
+	.img-port-pos-2{display: inline}
+}
+@media screen and (min-width: 1000px) and (max-width: 1200px) {
+	.logo-w{width: auto; height: 60px}
+	.stocks-view-big{width: 220px}
+	.stocks-view{width: 150px}
+	.img-port-w{width: 800px}
+	.img-help-w{width: 600px}
+	.main-menu{display: inline}
+	.main-menu-none{display: inline}
+	.anchor{display: none}
+	.sig1{display: inline}
+	.sig2{display: inline}
+	.sig4{display: inline}
+	.img-port-pos-1{display: none}
+	.img-port-pos-2{display: inline}
+}
+@media screen and (min-width: 950px) and (max-width: 1000px) {
+	.logo-w{width: auto; height: 60px}
+	.stocks-view-big{width: 220px}
+	.stocks-view{width: 120px}
+	.img-port-w{width: 600px}
+	.img-help-w{width: 400px}
+	.img-stat-w{width: 400px}
+	.img-ww{width:550px}
+	.main-menu{display: inline}
+	.main-menu-none{display: inline}
+	.anchor{display: none}
+	.sig1{display: inline}
+	.sig2{display: inline}
+	.sig4{display: none}
+	.img-port-pos-1{display: none}
+	.img-port-pos-2{display: inline}
+}
+@media screen and (min-width: 600px) and (max-width: 950px) {
+	.logo-w{width: auto; height: 60px}
+	.stocks-view-big{width: 150px}
+	.stocks-view{width: 100px}
+	.img-port-w{width: 400px}
+	.img-help-w{width: 300px}
+	.img-stat-w{width: 320px}
+	.img-ta{width: 300px}
+	.img-ww{width:400px}
+	.main-menu{display: none}
+	.main-menu-none{display: inline}
+	.anchor{display: inline}
+	.sig1{display: inline}
+	.sig2{display: inline}
+	.sig4{display: none}
+	.img-port-pos-1{display: none}
+	.img-port-pos-2{display: inline}
+}
+@media screen and (min-width: 400px) and (max-width: 600px) {
+	.logo-w{width: auto; height: 60px}
+	.stocks-view-big{display: none}
+	.stocks-view{width: 80px}
+	.img-port-w{width: 250px}
+	.img-help-w{width: 250px}
+	.img-stat-w{width: 50px}
+	.img-ta{width: 200px}
+	.img-ww{width:250px}
+	.main-menu{display: none}
+	.main-menu-none{display: inline}
+	.anchor{display: inline}
+	.sig1{display: inline}
+	.sig2{display: none}
+	.sig4{display: none}
+	.img-port-pos-1{display: none}
+	.img-port-pos-2{display: inline; width: 250px}
+}
+@media screen and (max-width: 400px) {
+	.logo-w{width: auto; height: 45px}
+	.stocks-view-big{display: none}
+	.stocks-view{width: 80px}
+	.img-port-w{width: 150px}
+	.img-help-w{width: 100px}
+	.img-stat-w{width: 50px}
+	.img-ta{width: 100px}
+	.img-ww{width:200px}
+	.main-menu{display: none}
+	.main-menu-none{display: inline}
+	.anchor{display: inline}
+	.sig1{display: none}
+	.sig2{display: none}
+	.sig4{display: none}
+	.img-port-pos-1{display: none}
+	.img-port-pos-2{display: inline; width: 150px}
+}
+
+/*
+@media screen and (min-width: 1200px) {
+	.chart{width: 1000px; height: 500px}
+}
+@media screen and (min-width: 600px) and (max-width: 1200px) {
+	.chart{width: 400px; height: 250px}
+}
+@media screen and (max-width: 600px) {
+	.chart{width: 300px; height: 150px}
+}*/

@@ -1,0 +1,383 @@
+/*
+ * web3 jQuery plugin - www.exteon.ro
+ *
+ * Copyright (c) 2010 EXTEON
+ * Free for use under GNU LGPL license version 2
+ * http://www.gnu.org/licenses/lgpl.html
+ */
+
+(function ($){
+
+// web3Popup plugin -- opens a web3 style popup
+
+// --- parameters ---
+// autoSize (bool)													: autosize window to fit contents					default:true
+// bound = (bool)													: bound to not exceed parent client rect			default: true
+// href = (string) 													: contents href
+// html = (string) | (DOM element) | (jQuery) | (jQuery selector)	: HTML contents; if href is present, contents
+//																	: are populated with html then replaced by href
+// left, top														: position of popup, relative to parent
+//																	: these take precedence over X,Y if present
+// X, Y = (int)														: position of popup center, relative to parent
+//																	: center											default: 0,0
+// ondone = (string) | (function)									: fire when display is complete
+// onshow = (string) | (function)									: fire when popup is shown
+// onhide = (string) | (function)									: ...
+// onclose = (string) | (function)									: fire when the popup is destoyed
+// show, hide = (function)											: animation functions								default: jQuery show() and hide() with 100 speed
+// mode = 'iframe' | 'inline'										: popup mode; 'inline' ajax-fetches
+//																	: contents and displays in div						default: 'iframe'
+// moveHandle = (jQuery selector)									: if present, this will be the moving
+//																	: handle for the popup
+// parent = (DOM element) | (jQuery) | (jQuery selector)			: popup parent										default: BODY of current context
+// position = 'absolute' | ''										: 'absolute' for floating							default: 'absolute'
+// positionAdjust = 'smart' | ''									: 'smart' for smart vertical positioning			default: ''
+//																	: requires top coordinate to work 
+// relativeTo = (DOM element) | (jQuery) | (jQuery selector)		: element to position relative to
+// width, height													: default (minimum) dimension of popup
+//																	: autosize and bound alter dimensions				default: half of parent
+// zIndex															: container z-index
+// ---- returns ---
+// (object)															: control interface for the popup containing show, hide, close methods
+//																	: and container and content objects
+// --- other ---
+// If mode is iframe, the created window will be registered with the object web3Popup, same as the function return result. If mode=inline, you will have to
+// store the returned interface to use the control functions
+
+	$.web3Popup=function(settings){
+		settings=$.extend({
+			name:'',
+			autoSize:true,
+			bound:true,
+			hide:function(element,callback){element.slideUp(100,callback)},
+			html:'<img src="Images/throbber.gif" />',
+			mode:'iframe',
+			parent:$('body'),
+			position:'absolute',
+			positionAdjust:'',
+			show:function(element,callback){element.slideDown(100,callback)},
+			X:0,
+			Y:0,
+			zIndex:0
+		},settings);
+		var parent=$(settings.parent),
+			posX=0,
+			posY=0,
+			offsetX=0,
+			offsetY=0,
+			adjustX,
+			adjustY,
+			moving=false,
+			closed=false;
+		if(!settings.width)
+			settings.width=settings.autoSize?1:Math.floor(parent.attr('clientWidth')/2);
+		if(!settings.height)
+			settings.height=settings.autoSize?1:Math.floor(parent.attr('clientHeight')/2);
+		var container=$('<div></div>')
+				.css('position',settings.position)
+				.css('display','none')
+				.css('z-index',settings.zIndex)
+				.appendTo(parent),
+			content=false,
+			content3=false,
+			toPosition,
+			parentPosition,
+			controlInterface={
+				settings:settings,
+				show:function(resetPosition){
+					callCallback('onctrlshow');
+					if(resetPosition)
+						offsetX=offsetY=0;
+					showPopup(content3,function(){
+						callCallback('onshow');
+					});
+				},
+				hide:function(){
+					callCallback('onctrlhide');
+					settings.hide(container,function(){
+						callCallback('onhide');
+					});
+				},
+				close:function(){
+					closed=true;
+					callCallback('onctrlclose');
+					settings.hide(container,function(){
+						container.remove();
+						callCallback('onhide');
+						callCallback('onclose');
+					});
+				},
+				adjust:function(){
+					initialAdjust();
+					adjust(content3,true);
+				},
+				adjustResize:function(){
+					initialAdjust();
+					adjust(content3);
+				},
+				container:container[0]
+			},
+			completed=false;
+		initialAdjust();
+		if(settings.html||!settings.href){
+			content3=content=$('<div></div>')
+				.css('position',settings.position)
+				.css('overflow','hidden')
+				.html(settings.html);
+			container.html(content);
+			if(settings.href)
+				showPopup(content);
+			else {
+				showPopup(content,done);
+				if(settings.moveHandle)
+					$(settings.moveHandle,content3).bind('mousedown',moveMD);
+			}
+		}
+		if(settings.href){
+			if(settings.mode=='iframe'){
+				var content2=$('<iframe scrolling="no"></iframe>')
+					.attr('frameBorder',0)
+					.attr('src',settings.href)
+					.css('position',settings.position)
+					.css('display','none')
+					.css('overflow-y','hidden')
+					.css('width',settings.width+'px')
+					.css('height',settings.height+'px')
+					.bind('load',Lload)
+					.attr('allowTransparency',true)
+					.appendTo(container);
+				content3=content2;
+				content3[0].web3Popup=controlInterface;
+			} else {
+				$.get(settings.href,function(data){
+					settings.hide(container,function(){
+						content.html(data);
+						showPopup(content,done);
+					});
+				});
+			}
+		}
+		return controlInterface;
+		function initialAdjust(){
+			var to;
+			if(settings.relativeTo)
+				to=$(settings.relativeTo);
+			else
+				to=parent;
+			parentPosition=parent.web3Position();
+			toPosition=to.web3Position();
+			posX=toPosition.outer.left-parentPosition.inner.left;
+			posY=toPosition.outer.top-parentPosition.inner.top;
+			if(typeof(settings.left)=='undefined')
+				posX+=Math.floor(toPosition.outer.width/2)+settings.X;
+			else
+				posX+=settings.left;
+			if(typeof(settings.top)=='undefined')
+				posY+=Math.floor(toPosition.outer.height/2)+settings.Y;
+			else
+				posY+=settings.top;
+		}
+		function adjust(content,noresize){
+			adjustX=adjustY=0;
+			var width=settings.width,
+				height=settings.height,
+				parentPosition=parent.web3Position();
+			if(!noresize){
+				content.css('width',width+'px').css('height',height+'px');
+				if(settings.autoSize){
+					var autoWidth=0,
+						autoHeight=0;
+					if(content.attr('tagName')=='IFRAME'){
+						if(content[0].contentWindow.document.body){						// IE sucks
+							autoWidth=content[0].contentWindow.document.body.scrollWidth;
+							autoHeight=content[0].contentWindow.document.body.scrollHeight;
+						}
+						if(content[0].contentWindow.document.documentElement){						// IE sucks
+							if(autoWidth<content[0].contentWindow.document.documentElement.scrollWidth)
+								autoWidth=content[0].contentWindow.document.documentElement.scrollWidth;
+							if(autoHeight<content[0].contentWindow.document.documentElement.scrollHeight)
+								autoHeight=content[0].contentWindow.document.documentElement.scrollHeight;
+						}
+					} else {
+						autoWidth=content.attr('scrollWidth');
+						autoHeight=content.attr('scrollHeight');
+					}
+					if(autoWidth>width)
+						width=autoWidth;
+					if(autoHeight>height)
+						height=autoHeight;
+				}
+			} else {
+				width=Math.max(container.width(),width);
+				height=Math.max(container.height(),height);
+			}
+			if(settings.bound&&settings.positionAdjust!='smart'){
+				if(width>parentPosition.inner.width)
+					width=parentPosition.inner.width;
+					
+				if(settings.name == 'criteria') {
+					if(parentPosition.inner.width <= 640 ) {
+						height = 635;
+					}
+					else if(parentPosition.inner.width > 640 && parentPosition.inner.width <= 850 ) {
+						height = 635;
+					}
+					else if(parentPosition.inner.width > 850) {
+						height = 635;
+					}
+				}
+				else {
+					if(height>parentPosition.inner.height)
+					height=parentPosition.inner.height;
+				}
+			}
+			var left=posX+offsetX,
+				top=posY+offsetY;
+			if(typeof(settings.left)=='undefined')
+				left-=Math.floor(width/2);
+			if(typeof(settings.top)=='undefined')
+				top-=Math.floor(height/2);
+			else {
+				var scrollY=typeof(window.scrollY)!='undefined'?window.scrollY:document.documentElement.scrollTop,						//HACK:IE
+					innerHeight=typeof(window.innerHeight)!='undefined'?window.innerHeight:document.documentElement.clientHeight;		//HACK:IE
+				if(settings.positionAdjust=='smart'&&(!offsetY&&!moving||top+height>scrollY+innerHeight||top<scrollY)){
+					if(toPosition.outer.top-scrollY-height>=0){
+						adjustY=toPosition.outer.top-height-top;
+					}else if(scrollY+innerHeight-toPosition.outer.bottom-height>=0)
+						adjustY=toPosition.outer.bottom-top;
+					else
+						adjustY=scrollY-parentPosition.inner.top-top;
+					top+=adjustY;
+				}
+			}
+			if(settings.bound){
+				if((settings.positionAdjust!='smart'||!offsetX)&&left+width>parentPosition.inner.width){
+					adjustX-=left+width-parentPosition.inner.width;
+					left=parentPosition.inner.width-width;
+				}
+				if(settings.positionAdjust!='smart'&&top+height>parentPosition.inner.height){
+					adjustY-=top+height-parentPosition.inner.height;
+					top=parentPosition.inner.height-height;
+				}
+			}
+			if(settings.bound||settings.position!='absolute'){
+				if((settings.positionAdjust!='smart'||!offsetX)&&left<0){
+					adjustX-=left;
+					left=0;
+				}
+				if(settings.positionAdjust!='smart'&&top<0){
+					adjustY-=top;
+					top=0;
+				}
+			}
+			content
+				.css('width',width+'px')
+				.css('height',height+'px');
+			if(settings.position=='absolute')
+				container
+					.css('left',left+parentPosition.inner.left-parentPosition.reference.left+'px')
+					.css('top',top+parentPosition.inner.top-parentPosition.reference.top+'px')
+					.css('width',width+'px')
+					.css('height',height+'px');
+			else 
+				container
+					.css('marginLeft',left+'px')
+					.css('marginTop',top+'px')
+					.css('width',width+'px')
+					.css('height',height+'px');
+		}
+		function showPopup(content,callback){
+			container
+				.css('width','0px')
+				.css('height','0px')
+				.css('display','');
+			content.css('display','');
+			adjust(content);
+			container.css('display','none');
+			settings.show(container,function(){
+				adjust(content);
+				container.css('zoom','');
+				if(callback)
+					if(typeof(callback)=='function')
+						callback();
+					else $.globalEval(callback);
+			});
+		}
+		function callCallback(callback){
+			if(settings[callback])
+				if(typeof(settings[callback])=='function')
+					settings[callback]();
+				else
+					$.globalEval(settings[callback]);
+		}
+		function done(){
+			callCallback('ondone');
+			callCallback('onshow');
+		}
+		function Lload(){
+			if(!closed){
+				var completed2=completed;
+				$(content2[0].contentWindow).bind('unload',function(){
+					container.css('display','none');
+					content2.css('display','none');
+					showPopup(content);
+				});
+				settings.hide(container,function(){
+					content.css('display','none');
+					if(!completed2)
+						showPopup(content2,done);
+					else
+						showPopup(content2,function(){
+							callCallback('onshow');
+						});
+				});
+				controlInterface.content=content3[0];
+				content3[0].contentWindow.web3Popup=controlInterface;
+				if(settings.moveHandle)
+					$(settings.moveHandle,content3[0].contentWindow.document).bind('mousedown',moveMD);
+				if(settings.onmousedown)
+					allFrames(function(win){
+						$(win.document).bind('mousedown',settings.onmousedown);
+					},content3[0].contentWindow);
+				completed=true;
+				callCallback('onload');
+			}
+		}
+		function allFrames(toDo,win,notfirst){
+			if(!win){
+				win=top;
+				andfirst=true;
+			}
+			if(!notfirst)
+				toDo(win);
+			$.each(win.frames,function(){
+				toDo(this);
+				allFrames(toDo,this,true);
+			});
+		}
+		function moveMD(event){
+			moving=true;
+			event.preventDefault();
+			var origX=event.screenX-offsetX-adjustX,
+				origY=event.screenY-offsetY-adjustY,
+				moveMM=function(event){
+					offsetX=event.screenX-origX;
+					offsetY=event.screenY-origY;
+					adjust(content,true);
+					event.preventDefault();
+					event.stopPropagation();
+				};
+			allFrames(function(win){
+				$(win.document).bind('mousemove',moveMM).one('mouseup',function(){
+					allFrames(function(win){
+						$(win.document).unbind('mousemove',moveMM);
+					});
+					moving=false;
+				});
+			});
+		}
+		function num(el, prop) {
+			return parseInt($.curCSS(el.jquery?el[0]:el,prop,true))||0;
+		};
+	}
+})(jQuery);
